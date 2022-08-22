@@ -1,35 +1,36 @@
-const buttons: boolean[] = [];
-
-const addButtons = (amount: number) => {
-	while (buttons.pop() !== undefined) {}
+// Array of boolean simulating switches
+const switches: boolean[] = [];
+// Set how many switches are in a the challenge
+const setSwitches = (amount: number) => {
+	while (switches.pop() !== undefined) {}
 	for (let i = 0; i < amount; i++) {
-		buttons.push(true);
+		switches.push(true);
 	}
 };
-
+// Steps counter
 let count = 0;
-
-const updateButtons = (index: number, value: boolean) => {
-	if (buttons[index] !== undefined) {
+// Update switch and increment counter
+const updateSwitch = (index: number, value: boolean) => {
+	if (switches[index] !== undefined) {
 		count++;
-		buttons[index] = value;
+		switches[index] = value;
 	}
 };
-
-const enableButton = (index: number) => {
+// Make switch operable
+const enableSwitch = (index: number) => {
 	if (!isOperable(index)) {
 		turnOn(index + 1);
-		for (let i = index + 2; i < buttons.length; i++) {
+		for (let i = index + 2; i < switches.length; i++) {
 			turnOff(i);
 		}
 	}
 };
-
+// Check if switch is operable
 const isOperable = (index: number) => {
-	if (buttons[index + 1] !== undefined) {
-		if (buttons[index + 1]) {
-			for (let i = index + 2; i < buttons.length; i++) {
-				const element = buttons[i];
+	if (switches[index + 1] !== undefined) {
+		if (switches[index + 1]) {
+			for (let i = index + 2; i < switches.length; i++) {
+				const element = switches[i];
 				if (element) {
 					return false;
 				}
@@ -40,40 +41,40 @@ const isOperable = (index: number) => {
 	}
 	return true;
 };
-
+// Turn on switch if not turned on
 const turnOn = (index: number) => {
-	if (index >= buttons.length) {
+	if (index >= switches.length) {
 		return;
 	}
-	if (buttons[index]) return;
+	if (switches[index]) return;
 	if (isOperable(index)) {
-		updateButtons(index, true);
+		updateSwitch(index, true);
 	} else {
-		enableButton(index);
+		enableSwitch(index);
 		turnOn(index);
 	}
 };
-
+// Turn off switch if not turned off
 const turnOff = (index: number) => {
-	if (index >= buttons.length) {
+	if (index >= switches.length) {
 		return;
 	}
-	if (!buttons[index]) return;
+	if (!switches[index]) return;
 	if (isOperable(index)) {
-		updateButtons(index, false);
+		updateSwitch(index, false);
 	} else {
-		enableButton(index);
+		enableSwitch(index);
 		turnOff(index);
 	}
 };
-
+// Solve Challenge
 const solve = () => {
 	count = 0;
-	for (let index = 0; index < buttons.length; index++) {
+	for (let index = 0; index < switches.length; index++) {
 		turnOff(index);
 	}
 	console.log(count);
 };
 
-addButtons(34);
+setSwitches(34);
 solve();
